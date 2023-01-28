@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+header {
+  background-color: rgb(75, 174, 249);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body {
+  background-color: rgb(239, 239, 239);
+}
+h1 {
+  color: white;
+  font-size: xx-large;
+  height: 100px;
+}
+#game-area {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border: 0.5px solid black;
+  border-radius: 5px;
+}
+#board-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+}
+.board-square {
+  aspect-ratio: 1;
+  width: 30%;
+  background-color: rgb(239, 239, 239);
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 4em;
+  text-align: center;
+  padding:20px;
+  
+}
+.green {
+  background-color: lightgreen;
+}
