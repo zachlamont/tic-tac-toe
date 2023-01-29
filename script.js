@@ -1,5 +1,5 @@
 const gameArea = document.getElementById("game-area");
-const info = document.getElementById("info");
+const info = document.getElementById("info"); // hidden with display: none
 const message = document.getElementById("message");
 let reset = document.getElementById("reset");
 const boardText = document.createElement("p");
@@ -7,11 +7,12 @@ const boardText2 = document.createElement("p");
 info.appendChild(boardText);
 info.appendChild(boardText2);
 
-let winnerCells = [];
-let winnerCoordinates = [];
-
 const gameBoard = document.createElement("div");
 gameBoard.id = "board-container";
+
+//Set up initial game state
+let winnerCells = [];
+let winnerCoordinates = [];
 
 let gameState = {
   playerTurn: true,
@@ -23,17 +24,27 @@ let gameState = {
   winner: null,
 };
 
-const boardContainsNull = (board) => {
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board[i].length; j++) {
-      if (board[i][j] === null) {
-        return true;
-      }
-    }
+//Create board squares and add event-listener
+for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    let cell = document.createElement("div");
+    cell.setAttribute("x-data", i);
+    cell.setAttribute("y-data", j);
+    cell.classList.add("board-square");
+    gameBoard.appendChild(cell);
   }
-  return false;
-};
+}
+gameBoard.addEventListener("click", function (event) {
+  //handle the click event
 
+  if (gameState.playerTurn === true) {
+    playerMove(event);
+  } else {
+    computerMove(event);
+  }
+});
+
+//playerMove is triggered by click event
 const playerMove = (event) => {
   let x = event.target.getAttribute("x-data");
   let y = event.target.getAttribute("y-data");
@@ -55,12 +66,14 @@ const playerMove = (event) => {
     }
   }
 };
-
+//computerMove is called by player move if there are empty cells remaining
 const computerMove = (board) => {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       if (board[i][j] === null) {
         gameState.board[i][j] = "O";
+
+        //Check for a winning move
         if (checkWin(gameState.board) === true) {
           var winningCell = document.querySelector(
             `div[x-data="${i}"][y-data="${j}"]`
@@ -90,28 +103,24 @@ const computerMove = (board) => {
   randomCell.classList.add("fade-in");
   randomCell.textContent = "O";
 
+  //Return gameState to player's turn
   gameState.playerTurn = true;
 };
 
-for (let i = 0; i < 3; i++) {
-  for (let j = 0; j < 3; j++) {
-    let cell = document.createElement("div");
-    cell.setAttribute("x-data", i);
-    cell.setAttribute("y-data", j);
-    cell.classList.add("board-square");
-    gameBoard.appendChild(cell);
-  }
-}
-gameBoard.addEventListener("click", function (event) {
-  //handle the click event
+//Helper functions:
 
-  if (gameState.playerTurn === true) {
-    playerMove(event);
-  } else {
-    computerMove(event);
+//Function for checking if any cells are empty
+const boardContainsNull = (board) => {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      if (board[i][j] === null) {
+        return true;
+      }
+    }
   }
-});
-
+  return false;
+};
+//Function for checking if win condition is met
 const checkWin = (board) => {
   // check rows
   for (let i = 0; i < 3; i++) {
@@ -126,7 +135,6 @@ const checkWin = (board) => {
         [i, 1],
         [i, 2],
       ];
-
       return true;
     }
   }
@@ -144,7 +152,6 @@ const checkWin = (board) => {
         [1, i],
         [2, i],
       ];
-
       return true;
     }
   }
@@ -178,6 +185,7 @@ const checkWin = (board) => {
   return false;
 };
 
+//Function for highlighting the winning three cells
 const highlightWinningCells = (winnerCoordinates) => {
   winnerCoordinates.forEach((coordinates) => {
     const x = coordinates[0];
@@ -191,6 +199,7 @@ const highlightWinningCells = (winnerCoordinates) => {
   });
 };
 
+//Function for resetting the game state
 const resetGame = () => {
   gameState = {
     playerTurn: true,
@@ -210,6 +219,7 @@ const resetGame = () => {
   }
 };
 
+//'Start Over' button
 reset.addEventListener("click", function () {
   //handle the click event
   resetGame();
