@@ -7,21 +7,35 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 150px;
+}
+.title {
+  align-self: center;
 }
 body {
+  display: flex;
+  flex-direction: column;
   background-color: rgb(239, 239, 239);
 }
 h1 {
   color: white;
-  font-size: xx-large;
-  height: 100px;
+  font-size: 40px;
+}
+main {
+  display: flex;
+  justify-content: center;
+  margin: 30px;
 }
 #game-area {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   background-color: white;
-  border: 0.5px solid black;
+  border: 0.5px solid grey;
   border-radius: 5px;
+  padding: 40px;
+  box-shadow: 0px 0px 30px #b4b4b4;
 }
 #board-container {
   display: flex;
@@ -34,11 +48,16 @@ h1 {
   background-color: rgb(239, 239, 239);
   border-radius: 5px;
   margin: 5px;
-  font-size: 4em;
+  font-size: 3.5em;
+  font-weight: 500;
   text-align: center;
-  padding:20px;
-  
+  padding: 25px;
 }
 .green {
   background-color: lightgreen;
+}
+
+#info {
+  color:#b4b4b4;
+  font-size: small;
 }
