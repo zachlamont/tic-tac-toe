@@ -20,9 +20,12 @@ body {
 h1 {
   color: white;
   font-size: 40px;
+  text-shadow: 4px 4px 0px rgb(24, 80, 162);
 }
 main {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   margin: 30px;
 }
@@ -52,12 +55,39 @@ main {
   font-weight: 500;
   text-align: center;
   padding: 25px;
+  transition: all 2s;
 }
 .green {
   background-color: lightgreen;
 }
 
 #info {
-  color:#b4b4b4;
+  color: #b4b4b4;
   font-size: small;
+  display: none;
+}
+
+.fade-in {
+  animation: fade-in 4s;
+}
+
+@keyframes fade-in {
+  from {
+    color: rgba(0, 0, 0, 0);
+  }
+  to {
+    color: black;
+  }
+}
+#message {
+  margin: 15px;
+}
+#reset {
+  background-color: rgb(75, 174, 249);
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid grey;
+  box-shadow: 0px 0px 10px #b4b4b4;
+  color: white;
+  font-weight: bold;
 }

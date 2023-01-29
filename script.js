@@ -1,5 +1,7 @@
 const gameArea = document.getElementById("game-area");
 const info = document.getElementById("info");
+const message = document.getElementById("message");
+let reset = document.getElementById("reset");
 const boardText = document.createElement("p");
 const boardText2 = document.createElement("p");
 info.appendChild(boardText);
@@ -11,7 +13,7 @@ let winnerCoordinates = [];
 const gameBoard = document.createElement("div");
 gameBoard.id = "board-container";
 
-const gameState = {
+let gameState = {
   playerTurn: true,
   board: [
     [null, null, null],
@@ -19,7 +21,6 @@ const gameState = {
     [null, null, null],
   ],
   winner: null,
-  isOver: false,
 };
 
 const boardContainsNull = (board) => {
@@ -34,22 +35,24 @@ const boardContainsNull = (board) => {
 };
 
 const playerMove = (event) => {
-  event.target.textContent = "X";
-  gameState.playerTurn = false;
-
   let x = event.target.getAttribute("x-data");
   let y = event.target.getAttribute("y-data");
 
-  gameState.board[x][y] = "X";
-  boardText.textContent = "gameState.board" + JSON.stringify(gameState.board);
+  if (gameState.board[x][y] === null) {
+    event.target.textContent = "X";
+    gameState.playerTurn = false;
 
-  if (checkWin(gameState.board) === true) {
-    gameState.winner = "player";
-    highlightWinningCells(winnerCoordinates);
-  } else if (boardContainsNull(gameState.board)) {
-    computerMove(gameState.board);
-  } else {
-    boardText.textContent = "It's a draw";
+    gameState.board[x][y] = "X";
+    boardText.textContent = "gameState.board" + JSON.stringify(gameState.board);
+
+    if (checkWin(gameState.board) === true) {
+      gameState.winner = "player";
+      highlightWinningCells(winnerCoordinates);
+    } else if (boardContainsNull(gameState.board)) {
+      computerMove(gameState.board);
+    } else {
+      message.textContent = "It's a draw!";
+    }
   }
 };
 
@@ -62,6 +65,7 @@ const computerMove = (board) => {
           var winningCell = document.querySelector(
             `div[x-data="${i}"][y-data="${j}"]`
           );
+          winningCell.classList.add("animation");
           winningCell.textContent = "O";
           gameState.winner = "computer";
           highlightWinningCells(winnerCoordinates);
@@ -82,6 +86,8 @@ const computerMove = (board) => {
   gameState.board[x][y] = "O";
   boardText.textContent = "gameState.board" + JSON.stringify(gameState.board);
   let randomCell = document.querySelector(`div[x-data="${x}"][y-data="${y}"]`);
+
+  randomCell.classList.add("fade-in");
   randomCell.textContent = "O";
 
   gameState.playerTurn = true;
@@ -184,5 +190,29 @@ const highlightWinningCells = (winnerCoordinates) => {
       "winnerCoordinates" + JSON.stringify(winnerCoordinates);
   });
 };
+
+const resetGame = () => {
+  gameState = {
+    playerTurn: true,
+    board: [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null],
+    ],
+    winner: null,
+  };
+  winnerCells = [];
+  winnerCoordinates = [];
+  const cells = document.querySelectorAll(".board-square");
+  for (let cell of cells) {
+    cell.textContent = "";
+    cell.classList.remove("fade-in", "green");
+  }
+};
+
+reset.addEventListener("click", function () {
+  //handle the click event
+  resetGame();
+});
 
 gameArea.appendChild(gameBoard);
